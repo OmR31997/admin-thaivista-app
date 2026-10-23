@@ -132,6 +132,8 @@ export async function clearFrontendCache(): Promise<void> {
 }
 
 
+export type PropertyStatus = "published" | "pending";
+
 export interface PropertyItem {
   _id: string;
   name: string;
@@ -145,7 +147,7 @@ export interface PropertyItem {
   bathrooms: string;
   sizeSQM: string;
   price: string;
-  status?: "published" | "draft" | "archived" | string;
+  status?: PropertyStatus | string;
   message?: string;
   photoPaths: string[];
   createdAt: string;
@@ -164,7 +166,7 @@ export interface CreatePropertyInput {
   bathrooms: string;
   sizeSQM: string;
   price: string;
-  status?: "published" | "draft" | "archived" | string;
+  status?: PropertyStatus | string;
   message?: string;
   photoPaths?: string[];
 }
@@ -178,15 +180,15 @@ export interface InquiryContact {
 
 export interface InquiryItem {
   _id: string;
-  intent: "buy" | "rent" | "invest" | "sell" | "list" | string;
-  propertyType: string;
-  preferredArea: string;
-  budget: string;
+  intent: "contact" | "buy" | "rent" | "invest" | string;
+  propertyType?: string | null;
+  preferredArea?: string | null;
+  budget?: string | null;
   bedrooms?: string | null;
-  timeline: string;
+  timeline?: string | null;
   contact: InquiryContact;
   message?: string;
-  status: "new" | "contacted" | "qualified" | "closed" | "spam" | string;
+  status: "pending" | "resolved" | string;
   createdAt: string;
   updatedAt: string;
 }
@@ -301,9 +303,21 @@ export async function deleteProperty(id: string): Promise<boolean> {
 
 export async function updatePropertyStatus(
   id: string,
-  status: string
+  status: PropertyStatus | string
 ): Promise<boolean> {
   return (await updateProperty(id, { status })).success;
+}
+
+export interface CreateInquiryInput {
+  intent?: "contact" | "buy" | "rent" | "invest" | string;
+  propertyType?: string | null;
+  preferredArea?: string | null;
+  budget?: string | null;
+  bedrooms?: string | null;
+  timeline?: string | null;
+  contact: InquiryContact;
+  message?: string;
+  status?: string;
 }
 
 // Inquiries CRUD
@@ -312,7 +326,7 @@ export async function fetchInquiries(): Promise<{
   total: number;
 }> {
   try {
-    const res = await fetch(`${API_BASE_URL}/property-inquiries?limit=50`, {
+    const res = await fetch(`${API_BASE_URL}/property-inquiries?limit=100`, {
       cache: "no-store",
     });
     if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
@@ -324,6 +338,35 @@ export async function fetchInquiries(): Promise<{
   } catch (error) {
     console.warn("Failed to fetch inquiries from API:", error);
     return { inquiries: [], total: 0 };
+  }
+}
+
+export async function createInquiry(
+  input: CreateInquiryInput
+): Promise<{ success: boolean; data?: InquiryItem; error?: string }> {
+  try {
+    const payload = { ...input };
+    if (!payload.status) {
+      delete payload.status;
+    }
+    const res = await fetch(`${API_BASE_URL}/property-inquiries`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    const json = await res.json();
+    if (!res.ok) {
+      const errMsg = Array.isArray(json.message)
+        ? json.message.join(", ")
+        : json.message || "Failed to create enquiry";
+      return { success: false, error: errMsg };
+    }
+    return { success: true, data: json.data };
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : "Network error";
+    return { success: false, error: msg };
   }
 }
 
@@ -342,6 +385,18 @@ export async function updateInquiryStatus(
     return res.ok;
   } catch (error) {
     console.error("Failed to update inquiry status:", error);
+    return false;
+  }
+}
+
+export async function deleteInquiry(id: string): Promise<boolean> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/property-inquiries/${id}`, {
+      method: "DELETE",
+    });
+    return res.ok;
+  } catch (error) {
+    console.error("Failed to delete inquiry:", error);
     return false;
   }
 }

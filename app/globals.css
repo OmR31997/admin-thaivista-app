@@ -26,3 +26,26 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Sleek custom scrollbar for dark sidebar */
+.custom-sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #1c2942 transparent;
+}
+
+.custom-sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-sidebar-scroll::-webkit-scrollbar-thumb {
+  background: #1c2942;
+  border-radius: 9999px;
+}
+
+.custom-sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: #2b3c5e;
+}

@@ -126,9 +126,9 @@ export default function ChangePasswordModal({
         if (e.target === e.currentTarget) handleClose();
       }}
     >
-      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-neutral-100 overflow-hidden">
+      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-neutral-100 overflow-hidden max-h-[90vh] flex flex-col">
         {/* Header with Dark Navy / Gold Banner */}
-        <div className="px-6 py-5 bg-[#0d1527] text-white flex items-center justify-between border-b border-neutral-800">
+        <div className="px-6 py-5 bg-[#0d1527] text-white flex items-center justify-between border-b border-neutral-800 shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-amber-400/15 border border-amber-400/30 text-amber-400 flex items-center justify-center text-lg shrink-0">
               <i className="bi bi-shield-lock" />
@@ -153,11 +153,12 @@ export default function ChangePasswordModal({
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          {/* Error Alert */}
-          {errorMsg && (
-            <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200/80 text-rose-800 text-xs flex items-start gap-2.5">
-              <i className="bi bi-exclamation-circle-fill text-rose-600 text-sm mt-0.5 shrink-0" />
+        <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0 overflow-hidden">
+          <div className="p-6 space-y-4 overflow-y-auto flex-1">
+            {/* Error Alert */}
+            {errorMsg && (
+              <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200/80 text-rose-800 text-xs flex items-start gap-2.5">
+                <i className="bi bi-exclamation-circle-fill text-rose-600 text-sm mt-0.5 shrink-0" />
               <div className="leading-relaxed font-medium">{errorMsg}</div>
             </div>
           )}
@@ -310,37 +311,38 @@ export default function ChangePasswordModal({
               <span>Passwords match</span>
             </div>
           </div>
+        </div>
 
-          {/* Modal Actions */}
-          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-neutral-100">
-            <button
-              type="button"
-              onClick={handleClose}
-              disabled={loading}
-              className="px-4 py-2 text-xs font-semibold text-neutral-600 hover:text-neutral-800 bg-neutral-100 hover:bg-neutral-200/80 rounded-xl transition-colors cursor-pointer disabled:opacity-50"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={!canSubmit || Boolean(successMsg)}
-              className="px-5 py-2 text-xs font-semibold text-amber-950 bg-amber-400 hover:bg-amber-300 active:bg-amber-500 rounded-xl shadow-xs transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? (
-                <>
-                  <i className="bi bi-arrow-clockwise animate-spin text-sm" />
-                  <span>Updating...</span>
-                </>
-              ) : (
-                <>
-                  <i className="bi bi-check2 text-sm font-bold" />
-                  <span>Update Password</span>
-                </>
-              )}
-            </button>
-          </div>
-        </form>
-      </div>
+        {/* Modal Actions */}
+        <div className="flex items-center justify-end gap-2.5 px-6 py-4 border-t border-neutral-100 bg-[#fafaf8] shrink-0">
+          <button
+            type="button"
+            onClick={handleClose}
+            disabled={loading}
+            className="px-4 py-2 text-xs font-semibold text-neutral-600 hover:text-neutral-800 bg-neutral-100 hover:bg-neutral-200/80 rounded-xl transition-colors cursor-pointer disabled:opacity-50"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={!canSubmit || Boolean(successMsg)}
+            className="px-5 py-2 text-xs font-semibold text-amber-950 bg-amber-400 hover:bg-amber-300 active:bg-amber-500 rounded-xl shadow-xs transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? (
+              <>
+                <i className="bi bi-arrow-clockwise animate-spin text-sm" />
+                <span>Updating...</span>
+              </>
+            ) : (
+              <>
+                <i className="bi bi-check2 text-sm font-bold" />
+                <span>Update Password</span>
+              </>
+            )}
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
 
-import RecentEnquiries from "./RecentEnquiries";
+import Requirement from "./Requirement";
 
-export default RecentEnquiries;
+export default Requirement;

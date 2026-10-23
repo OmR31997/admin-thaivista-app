@@ -237,7 +237,7 @@ export default function Requirement({
     const recentList = inquiries.slice(0, 6);
 
     return (
-      <div className="bg-white rounded-2xl border border-[#ecece8] shadow-[0_2px_8px_rgba(0,0,0,0.02)] p-6 h-full flex flex-col justify-between">
+      <div className="bg-white rounded-2xl border border-[#e8ecef] shadow-[0_2px_8px_rgba(0,0,0,0.02)] p-6 h-full flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-neutral-100">
           <div>
@@ -260,15 +260,14 @@ export default function Requirement({
         </div>
 
         {/* List of Enquiries matching dashboard layout */}
-        <div className="divide-y divide-neutral-100 flex-1 flex flex-col justify-around py-1">
-          {recentList.length === 0 ? (
-            <div className="py-12 flex-1 flex flex-col items-center justify-center text-center text-xs text-neutral-400">
-              No recent enquiries received yet.
-            </div>
-          ) : (
-            recentList.map((item) => {
+        {recentList.length === 0 ? (
+          <div className="py-12 flex-1 flex flex-col items-center justify-center text-center text-xs text-neutral-400">
+            No recent enquiries received yet.
+          </div>
+        ) : (
+          <div className="divide-y divide-neutral-100 pt-1">
+            {recentList.map((item) => {
               const badge = getStatusBadge(item.status);
-              const isUpdating = updatingId === item._id;
 
               return (
                 <div
@@ -279,12 +278,12 @@ export default function Requirement({
                   <button
                     type="button"
                     onClick={() => setSelectedInquiry(item)}
-                    className="flex items-center gap-3.5 min-w-0 text-left cursor-pointer"
+                    className="flex items-center gap-3.5 min-w-0 text-left cursor-pointer flex-1"
                   >
                     <div className="w-10 h-10 rounded-full bg-[#e8f1fd] text-blue-700 border border-[#d2e3fc] flex items-center justify-center font-bold text-sm shrink-0">
                       {getInitial(item.contact?.name)}
                     </div>
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <div className="text-sm font-semibold text-neutral-900 truncate hover:text-blue-600 transition-colors">
                         {item.contact?.name || "Client"}
                       </div>
@@ -308,6 +307,12 @@ export default function Requirement({
 
                   {/* Right: Actions */}
                   <div className="relative shrink-0 flex items-center gap-2">
+                    <span
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium border ${badge.bg} ${badge.text} ${badge.border}`}
+                    >
+                      <span className={`w-1.5 h-1.5 rounded-full ${badge.dot}`} />
+                      {badge.label}
+                    </span>
                     <button
                       type="button"
                       onClick={() => setSelectedInquiry(item)}
@@ -319,9 +324,9 @@ export default function Requirement({
                   </div>
                 </div>
               );
-            })
-          )}
-        </div>
+            })}
+          </div>
+        )}
 
         {/* View Details Modal for Dashboard Widget */}
         {selectedInquiry && renderViewModal(selectedInquiry, () => setSelectedInquiry(null), handleStatusChange, () => setDeleteConfirmId(selectedInquiry._id))}

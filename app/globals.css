@@ -27,25 +27,138 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Sleek custom scrollbar for dark sidebar */
-.custom-sidebar-scroll {
+html {
+  scroll-behavior: smooth;
+}
+
+/* ========================================================
+   PRETTY CUSTOM SCROLLBAR SYSTEM
+   ======================================================== */
+
+/* Universal Scrollbar for modern sleek UI (Firefox) */
+* {
   scrollbar-width: thin;
-  scrollbar-color: #1c2942 transparent;
+  scrollbar-color: #cbd5e1 transparent;
 }
 
-.custom-sidebar-scroll::-webkit-scrollbar {
-  width: 4px;
+/* WebKit & Blink Browsers (Chrome, Edge, Safari, Opera) */
+*::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
 }
 
-.custom-sidebar-scroll::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.custom-sidebar-scroll::-webkit-scrollbar-thumb {
-  background: #1c2942;
+*::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
   border-radius: 9999px;
+  border: 1.5px solid transparent;
+  background-clip: padding-box;
+  transition: background-color 0.2s ease;
 }
 
-.custom-sidebar-scroll::-webkit-scrollbar-thumb:hover {
-  background: #2b3c5e;
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
 }
+
+*::-webkit-scrollbar-thumb:active {
+  background-color: #64748b;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Dark mode default scrollbars if OS preference is dark */
+@media (prefers-color-scheme: dark) {
+  * {
+    scrollbar-color: #334155 transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #334155;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: #475569;
+  }
+
+  *::-webkit-scrollbar-thumb:active {
+    background-color: #64748b;
+  }
+}
+
+/* Sleek custom scrollbar specifically tailored for dark sidebar */
+.custom-sidebar-scroll,
+.custom-scroll-dark {
+  scrollbar-width: thin !important;
+  scrollbar-color: #22314e transparent !important;
+}
+
+.custom-sidebar-scroll::-webkit-scrollbar,
+.custom-scroll-dark::-webkit-scrollbar {
+  width: 4.5px !important;
+  height: 4.5px !important;
+}
+
+.custom-sidebar-scroll::-webkit-scrollbar-track,
+.custom-scroll-dark::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.custom-sidebar-scroll::-webkit-scrollbar-thumb,
+.custom-scroll-dark::-webkit-scrollbar-thumb {
+  background-color: #22314e !important;
+  border-radius: 9999px !important;
+  border: 0.5px solid transparent !important;
+  background-clip: padding-box !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.custom-sidebar-scroll::-webkit-scrollbar-thumb:hover,
+.custom-scroll-dark::-webkit-scrollbar-thumb:hover {
+  background-color: #3b507d !important;
+}
+
+.custom-sidebar-scroll::-webkit-scrollbar-thumb:active,
+.custom-scroll-dark::-webkit-scrollbar-thumb:active {
+  background-color: #5572ab !important;
+}
+
+/* Ultra-slim scrollbar utility (4px) for compact areas (e.g., photo chips, dropdowns) */
+.custom-scrollbar-subtle {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.custom-scrollbar-subtle::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.custom-scrollbar-subtle::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar-subtle::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+.custom-scrollbar-subtle::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
+
+/* Utility to completely hide scrollbar while preserving scrollability */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

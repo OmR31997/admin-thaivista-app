@@ -315,7 +315,7 @@ export default function AdminDashboardPage() {
 
               {/* Right Column: Quick Actions Card (matches right card in screenshot) */}
               <div className="lg:col-span-4 flex flex-col">
-                <div className="bg-white rounded-2xl border border-[#e8ecef] shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 h-full flex flex-col justify-between">
+                <div className="bg-white rounded-2xl border border-[#e8ecef] shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 h-full flex flex-col">
                   <div>
                     <h3 className="font-serif text-lg font-bold text-neutral-900 tracking-tight mb-4">
                       Quick actions

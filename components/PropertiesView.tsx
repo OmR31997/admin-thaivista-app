@@ -511,7 +511,7 @@ export default function PropertiesView({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    Name *
+                    Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -559,7 +559,7 @@ export default function PropertiesView({
 
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    LINE ID (optional)
+                    LINE ID
                   </label>
                   <input
                     type="text"
@@ -577,7 +577,7 @@ export default function PropertiesView({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    I want to *
+                    I want to <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={formData.intent}
@@ -593,7 +593,7 @@ export default function PropertiesView({
 
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    Property type *
+                    Property type <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={formData.propertyType}
@@ -612,7 +612,7 @@ export default function PropertiesView({
 
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    Status *
+                    Status <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={normalizePropertyStatus(formData.status)}
@@ -629,7 +629,7 @@ export default function PropertiesView({
 
               <div>
                 <label className="block font-semibold text-neutral-700 mb-1">
-                  Project or building name *
+                  Project or building name <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -646,7 +646,7 @@ export default function PropertiesView({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    Bedrooms *
+                    Bedrooms <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={formData.bedrooms}
@@ -666,7 +666,7 @@ export default function PropertiesView({
 
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    Bathrooms *
+                    Bathrooms <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={formData.bathrooms}
@@ -687,7 +687,7 @@ export default function PropertiesView({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    Size (sq.m.) *
+                    Size (sq.m.) <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -703,7 +703,7 @@ export default function PropertiesView({
 
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    Expected price or rent *
+                    Expected price or rent <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -736,7 +736,7 @@ export default function PropertiesView({
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <label className="block font-semibold text-neutral-700">
-                    Photo links (optional)
+                    Photo links
                   </label>
                   <span className="text-[11px] text-neutral-400">
                     One URL per line
@@ -914,7 +914,7 @@ export default function PropertiesView({
                   </div>
                   <div>
                     <span className="text-neutral-400 font-medium">
-                      LINE ID (optional):
+                      LINE ID:
                     </span>
                     <div className="font-semibold text-neutral-900 mt-0.5 font-mono">
                       {selectedProperty.lineId || "—"}
@@ -938,7 +938,7 @@ export default function PropertiesView({
                 selectedProperty.photoPaths.length > 0 && (
                   <div>
                     <span className="text-neutral-400 font-medium block mb-1">
-                      Photo links (optional) ({selectedProperty.photoPaths.length}):
+                      Photo links ({selectedProperty.photoPaths.length}):
                     </span>
                     <div className="space-y-1.5 max-h-36 overflow-y-auto">
                       {selectedProperty.photoPaths.map((link, idx) => (

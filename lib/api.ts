@@ -389,6 +389,30 @@ export async function updateInquiryStatus(
   }
 }
 
+export async function updateInquiry(
+  id: string,
+  input: Partial<CreateInquiryInput>
+): Promise<{ success: boolean; data?: InquiryItem; error?: string }> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/property-inquiries/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
+    const json = await res.json();
+    if (!res.ok) {
+      const errMsg = Array.isArray(json.message)
+        ? json.message.join(", ")
+        : json.message || "Failed to update requirement";
+      return { success: false, error: errMsg };
+    }
+    return { success: true, data: json.data };
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : "Network error";
+    return { success: false, error: msg };
+  }
+}
+
 export async function deleteInquiry(id: string): Promise<boolean> {
   try {
     const res = await fetch(`${API_BASE_URL}/property-inquiries/${id}`, {

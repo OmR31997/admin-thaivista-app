@@ -518,7 +518,7 @@ export default function ContactEnquiriesView({
                     </div>
                   </div>
                   <div>
-                    <span className="text-neutral-400 font-medium">LINE ID (optional):</span>
+                    <span className="text-neutral-400 font-medium">LINE ID:</span>
                     <div className="font-semibold text-neutral-900 mt-0.5 font-mono">
                       {selectedEnquiry.contact?.lineId || "—"}
                     </div>
@@ -653,10 +653,10 @@ export default function ContactEnquiriesView({
                   />
                 </div>
 
-                {/* LINE ID (optional) */}
+                {/* LINE ID */}
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    LINE ID (optional)
+                    LINE ID
                   </label>
                   <input
                     type="text"

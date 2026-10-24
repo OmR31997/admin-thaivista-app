@@ -5,6 +5,7 @@ import {
   InquiryItem,
   CreateInquiryInput,
   createInquiry,
+  updateInquiry,
   updateInquiryStatus,
   deleteInquiry,
 } from "@/lib/api";
@@ -109,6 +110,7 @@ export default function Requirement({
   // Modals
   const [selectedInquiry, setSelectedInquiry] = useState<InquiryItem | null>(null);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [editingInquiry, setEditingInquiry] = useState<InquiryItem | null>(null);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
   // Form State
@@ -187,14 +189,17 @@ export default function Requirement({
     }
     setFormSubmitting(true);
     setFormError(null);
-    const res = await createInquiry(formData);
+    const res = editingInquiry
+      ? await updateInquiry(editingInquiry._id, formData)
+      : await createInquiry(formData);
     if (!res.success) {
-      setFormError(res.error || "Failed to create requirement");
+      setFormError(res.error || `Failed to ${editingInquiry ? "update" : "create"} requirement`);
       setFormSubmitting(false);
       return;
     }
     setFormSubmitting(false);
     setIsCreateOpen(false);
+    setEditingInquiry(null);
     setFormData(initialForm);
     if (onStatusUpdated) onStatusUpdated();
   };
@@ -391,6 +396,7 @@ export default function Requirement({
           <button
             type="button"
             onClick={() => {
+              setEditingInquiry(null);
               setFormData(initialForm);
               setFormError(null);
               setIsCreateOpen(true);
@@ -548,6 +554,34 @@ export default function Requirement({
                           </button>
                           <button
                             type="button"
+                            title="Edit requirement"
+                            onClick={() => {
+                              setEditingInquiry(item);
+                              setFormData({
+                                intent: item.intent,
+                                propertyType: item.propertyType || "condo",
+                                preferredArea: item.preferredArea || "central-pattaya",
+                                budget: item.budget || "3m-6m",
+                                bedrooms: item.bedrooms || "",
+                                timeline: item.timeline || "1-3-months",
+                                contact: {
+                                  name: item.contact?.name || "",
+                                  phoneWhatsApp: item.contact?.phoneWhatsApp || "",
+                                  email: item.contact?.email || "",
+                                  lineId: item.contact?.lineId || "",
+                                },
+                                message: item.message || "",
+                                status: item.status,
+                              });
+                              setFormError(null);
+                              setIsCreateOpen(true);
+                            }}
+                            className="w-8 h-8 rounded-lg bg-neutral-50 hover:bg-neutral-100 text-neutral-600 hover:text-neutral-900 border border-transparent hover:border-neutral-200 flex items-center justify-center transition-colors cursor-pointer"
+                          >
+                            <i className="bi bi-pencil text-xs" />
+                          </button>
+                          <button
+                            type="button"
                             title="Delete requirement"
                             onClick={() => setDeleteConfirmId(item._id)}
                             className="w-8 h-8 rounded-lg bg-neutral-50 hover:bg-rose-50 text-neutral-400 hover:text-rose-600 border border-transparent hover:border-rose-100 flex items-center justify-center transition-colors cursor-pointer"
@@ -574,18 +608,21 @@ export default function Requirement({
           () => setDeleteConfirmId(selectedInquiry._id)
         )}
 
-      {/* Modal: Add Requirement */}
+      {/* Modal: Add or Edit Requirement */}
       {isCreateOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in duration-150">
           <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-neutral-100 max-h-[90vh] flex flex-col overflow-hidden">
             {/* Modal Header (Stable) */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-100 shrink-0 bg-white">
               <h3 className="font-serif text-xl font-bold text-neutral-900">
-                Add New Requirement
+                {editingInquiry ? "Edit Requirement" : "Add New Requirement"}
               </h3>
               <button
                 type="button"
-                onClick={() => setIsCreateOpen(false)}
+                onClick={() => {
+                  setIsCreateOpen(false);
+                  setEditingInquiry(null);
+                }}
                 className="w-8 h-8 rounded-lg text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 flex items-center justify-center text-lg cursor-pointer transition-colors"
               >
                 ✕
@@ -604,7 +641,7 @@ export default function Requirement({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    I want to *
+                    I want to <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={formData.intent}
@@ -621,7 +658,7 @@ export default function Requirement({
 
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    Property type *
+                    Property type <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={formData.propertyType || "condo"}
@@ -643,7 +680,7 @@ export default function Requirement({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    Preferred area *
+                    Preferred area <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={formData.preferredArea || "central-pattaya"}
@@ -664,7 +701,7 @@ export default function Requirement({
 
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    Budget *
+                    Budget <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={formData.budget || "3m-6m"}
@@ -707,7 +744,7 @@ export default function Requirement({
 
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    Timeline *
+                    Timeline <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={formData.timeline || "1-3-months"}
@@ -729,7 +766,7 @@ export default function Requirement({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    Name *
+                    Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -790,7 +827,7 @@ export default function Requirement({
 
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
-                    LINE ID (optional)
+                    LINE ID
                   </label>
                   <input
                     type="text"
@@ -828,7 +865,10 @@ export default function Requirement({
             <div className="flex items-center justify-end gap-3 px-6 py-3.5 border-t border-neutral-100 bg-[#fafaf8] shrink-0">
               <button
                 type="button"
-                onClick={() => setIsCreateOpen(false)}
+                onClick={() => {
+                  setIsCreateOpen(false);
+                  setEditingInquiry(null);
+                }}
                 className="px-4 py-2 rounded-lg border border-neutral-200 hover:bg-white text-neutral-700 font-semibold cursor-pointer"
               >
                 Cancel
@@ -838,7 +878,7 @@ export default function Requirement({
                 disabled={formSubmitting}
                 className="px-5 py-2 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-white font-semibold cursor-pointer disabled:opacity-50"
               >
-                {formSubmitting ? "Saving..." : "Create Requirement"}
+                {formSubmitting ? "Saving..." : editingInquiry ? "Save Changes" : "Create Requirement"}
               </button>
             </div>
           </form>
@@ -1018,7 +1058,7 @@ function renderViewModal(
                 </div>
               </div>
               <div>
-                <span className="text-neutral-400 font-medium">LINE ID (optional):</span>
+                <span className="text-neutral-400 font-medium">LINE ID:</span>
                 <div className="font-semibold text-neutral-900 mt-0.5 font-mono">
                   {inquiry.contact?.lineId || "—"}
                 </div>

@@ -136,7 +136,7 @@ export default function LoginView({
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 disabled={loading}
-                className="w-full pl-10 pr-10 py-2.5 text-xs rounded-xl bg-[#fbfcfd] border border-[#dce1e7] text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 transition-all disabled:opacity-60"
+                className="w-full pl-10 pr-10 py-2.5 text-xs rounded-xl bg-[#fbfcfd] border border-[#dce1e7] text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 transition-all disabled:opacity-60 [&::-ms-reveal]:hidden [&::-ms-clear]:hidden"
               />
               <button
                 type="button"

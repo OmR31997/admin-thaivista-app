@@ -105,7 +105,10 @@ function storedPhone(value: string, country: CountryCode) {
   const international = getInternationalInput(trimmed);
   const parsed = international
     ? parsePhoneNumberFromString(international, { extract: false })
-    : parsePhoneNumberFromString(trimmed, country, { extract: false });
+    : parsePhoneNumberFromString(trimmed, {
+        defaultCountry: country,
+        extract: false,
+      });
   if (parsed) return parsed.number;
 
   const digits = trimmed.replace(/\D/g, "");
@@ -119,7 +122,10 @@ function initialInput(value: string) {
   const international = getInternationalInput(value);
   const parsed = international
     ? parsePhoneNumberFromString(international, { extract: false })
-    : parsePhoneNumberFromString(value, country, { extract: false });
+    : parsePhoneNumberFromString(value, {
+        defaultCountry: country,
+        extract: false,
+      });
 
   return {
     country,
@@ -206,7 +212,10 @@ export default function PhoneInput({
     }
     const parsed = international
       ? parsePhoneNumberFromString(international, { extract: false })
-      : parsePhoneNumberFromString(input, selectedCountry, { extract: false });
+      : parsePhoneNumberFromString(input, {
+          defaultCountry: selectedCountry,
+          extract: false,
+        });
 
     setCountry(selectedCountry);
     if (international) {

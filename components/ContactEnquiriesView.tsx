@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import FormErrorMessage from "@/components/FormErrorMessage";
+import PhoneInput from "@/components/PhoneInput";
+import { isValidInternationalPhone } from "@/lib/phone";
 import {
   InquiryItem,
   CreateInquiryInput,
@@ -122,6 +124,13 @@ export default function ContactEnquiriesView({
     }
     if (!formData.contact.email?.trim() && !formData.contact.phoneWhatsApp?.trim()) {
       setFormError("Please provide either Phone / WhatsApp or Email.");
+      return;
+    }
+    if (
+      formData.contact.phoneWhatsApp?.trim() &&
+      !isValidInternationalPhone(formData.contact.phoneWhatsApp)
+    ) {
+      setFormError("Please enter a valid phone number for the selected country.");
       return;
     }
     if (formData.contact.email?.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.contact.email.trim())) {
@@ -618,20 +627,14 @@ export default function ContactEnquiriesView({
                   <label className="block font-semibold text-neutral-700 mb-1">
                     Phone / WhatsApp
                   </label>
-                  <input
-                    type="text"
+                  <PhoneInput
                     value={formData.contact.phoneWhatsApp || ""}
-                    onChange={(e) =>
+                    onChange={(phoneWhatsApp) =>
                       setFormData({
                         ...formData,
-                        contact: {
-                          ...formData.contact,
-                          phoneWhatsApp: e.target.value,
-                        },
+                        contact: { ...formData.contact, phoneWhatsApp },
                       })
                     }
-                    placeholder="e.g. +66 81 234 5678"
-                    className="w-full px-3 py-2 rounded-lg border border-neutral-200 focus:outline-none focus:border-neutral-400 font-mono"
                   />
                 </div>
 

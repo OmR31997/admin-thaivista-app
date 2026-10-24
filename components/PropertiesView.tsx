@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import FormErrorMessage from "@/components/FormErrorMessage";
+import PhoneInput from "@/components/PhoneInput";
+import { isValidInternationalPhone } from "@/lib/phone";
 import {
   PropertyItem,
   PropertyStatus,
@@ -177,6 +179,10 @@ export default function PropertiesView({
     }
     if (!formData.phone?.trim() && !formData.email?.trim()) {
       setFormError("Please provide either Phone / WhatsApp or Email.");
+      return;
+    }
+    if (formData.phone?.trim() && !isValidInternationalPhone(formData.phone)) {
+      setFormError("Please enter a valid phone number for the selected country.");
       return;
     }
     if (formData.email?.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
@@ -542,14 +548,9 @@ export default function PropertiesView({
                   <label className="block font-semibold text-neutral-700 mb-1">
                     Phone / WhatsApp
                   </label>
-                  <input
-                    type="text"
+                  <PhoneInput
                     value={formData.phone || ""}
-                    onChange={(e) =>
-                      setFormData({ ...formData, phone: e.target.value })
-                    }
-                    placeholder="e.g. +66 81 234 5678"
-                    className="w-full px-3 py-2 rounded-lg border border-neutral-200 focus:outline-none focus:border-neutral-400"
+                    onChange={(phone) => setFormData({ ...formData, phone })}
                   />
                 </div>
               </div>

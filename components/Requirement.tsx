@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import FormErrorMessage from "@/components/FormErrorMessage";
 import {
   InquiryItem,
   CreateInquiryInput,
@@ -185,6 +186,10 @@ export default function Requirement({
     }
     if (!formData.contact.email?.trim() && !formData.contact.phoneWhatsApp?.trim()) {
       setFormError("Please provide either Phone / WhatsApp or Email.");
+      return;
+    }
+    if (formData.contact.email?.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.contact.email.trim())) {
+      setFormError("Please enter a valid email address.");
       return;
     }
     setFormSubmitting(true);
@@ -629,14 +634,10 @@ export default function Requirement({
               </button>
             </div>
 
-            <form onSubmit={handleCreateSubmit} className="flex flex-col flex-1 min-h-0 overflow-hidden text-xs">
+            <form noValidate onSubmit={handleCreateSubmit} className="flex flex-col flex-1 min-h-0 overflow-hidden text-xs">
               {/* Modal Body (Scrollable) */}
               <div className="p-6 overflow-y-auto space-y-4 flex-1">
-                {formError && (
-                  <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs">
-                    {formError}
-                  </div>
-                )}
+                {formError && <FormErrorMessage message={formError} />}
               {/* Row 1: I want to & Property type */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -843,6 +844,10 @@ export default function Requirement({
                   />
                 </div>
               </div>
+
+              <p className="-mt-2 text-[11px] text-neutral-500">
+                <span className="text-red-500">*</span> Phone / WhatsApp or email is required.
+              </p>
 
               {/* Row 6: Message */}
               <div>

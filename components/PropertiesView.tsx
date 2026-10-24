@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import FormErrorMessage from "@/components/FormErrorMessage";
 import {
   PropertyItem,
   PropertyStatus,
@@ -170,6 +171,22 @@ export default function PropertiesView({
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.name.trim()) {
+      setFormError("Please enter the owner's name.");
+      return;
+    }
+    if (!formData.phone?.trim() && !formData.email?.trim()) {
+      setFormError("Please provide either Phone / WhatsApp or Email.");
+      return;
+    }
+    if (formData.email?.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      setFormError("Please enter a valid email address.");
+      return;
+    }
+    if (!formData.buildingName.trim() || !formData.sizeSQM.trim() || !formData.price.trim()) {
+      setFormError("Please complete all required property details.");
+      return;
+    }
     setFormSubmitting(true);
     setFormError(null);
 
@@ -499,14 +516,10 @@ export default function PropertiesView({
               </button>
             </div>
 
-            <form onSubmit={handleFormSubmit} className="flex flex-col flex-1 min-h-0 overflow-hidden text-xs">
+            <form noValidate onSubmit={handleFormSubmit} className="flex flex-col flex-1 min-h-0 overflow-hidden text-xs">
               {/* Modal Body (Scrollable) */}
               <div className="p-6 overflow-y-auto space-y-4 flex-1">
-                {formError && (
-                  <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs">
-                    {formError}
-                  </div>
-                )}
+                {formError && <FormErrorMessage message={formError} />}
               {/* Contact Information */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -572,6 +585,10 @@ export default function PropertiesView({
                   />
                 </div>
               </div>
+
+              <p className="-mt-2 text-[11px] text-neutral-500">
+                <span className="text-red-500">*</span> Phone / WhatsApp or email is required.
+              </p>
 
               {/* Property Details */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

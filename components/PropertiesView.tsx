@@ -592,7 +592,7 @@ export default function PropertiesView({
               </p>
 
               {/* Property Details */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-semibold text-neutral-700 mb-1">
                     I want to <span className="text-red-500">*</span>
@@ -625,22 +625,6 @@ export default function PropertiesView({
                     <option value="villa">Villa</option>
                     <option value="land">Land</option>
                     <option value="commercial">Commercial</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-neutral-700 mb-1">
-                    Status <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    value={normalizePropertyStatus(formData.status)}
-                    onChange={(e) =>
-                      setFormData({ ...formData, status: e.target.value as PropertyStatus })
-                    }
-                    className="w-full px-3 py-2 rounded-lg border border-neutral-200 focus:outline-none focus:border-neutral-400 bg-white"
-                  >
-                    <option value="published">Published</option>
-                    <option value="pending">Pending</option>
                   </select>
                 </div>
               </div>

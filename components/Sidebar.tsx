@@ -82,9 +82,11 @@ export default function Sidebar({
                 <Image
                   src="/assets/Settings/thaivista-logo-transparent.png"
                   alt="Thai Vista Logo"
-                  width={24}
-                  height={24}
-                  className="object-contain"
+                  width={64}
+                  height={64}
+                  priority
+                  unoptimized
+                  className="w-6 h-6 object-contain"
                 />
               </div>
               <div className="min-w-0">
@@ -121,9 +123,11 @@ export default function Sidebar({
               <Image
                 src="/assets/Settings/thaivista-logo-transparent.png"
                 alt="Thai Vista Logo"
-                width={26}
-                height={26}
-                className="object-contain transition-transform group-hover:scale-110"
+                width={72}
+                height={72}
+                priority
+                unoptimized
+                className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-105 transform-gpu [backface-visibility:hidden]"
               />
             </button>
 

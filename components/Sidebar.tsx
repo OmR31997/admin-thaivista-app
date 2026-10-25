@@ -385,19 +385,6 @@ export default function Sidebar({
                 <i className="bi bi-box-arrow-right text-xs" />
                 <span>Sign out</span>
               </button>
-
-              <button
-                type="button"
-                onClick={toggleSidebar}
-                className="w-full flex items-center justify-between px-2.5 py-1.5 text-xs text-neutral-400 hover:text-amber-400 transition-colors rounded-lg hover:bg-[#162035] text-left cursor-pointer pt-1.5 border-t border-[#1a2337]/60 mt-1"
-                title="Collapse sidebar"
-              >
-                <span className="flex items-center gap-2">
-                  <i className="bi bi-layout-sidebar-inset text-xs" />
-                  <span>Collapse sidebar</span>
-                </span>
-                <i className="bi bi-chevron-left text-[10px]" />
-              </button>
             </div>
           </>
         ) : (
@@ -461,18 +448,6 @@ export default function Sidebar({
               <div className="hidden group-hover:flex absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-[#0e172a] text-rose-300 text-xs font-medium rounded-lg shadow-xl border border-rose-500/30 whitespace-nowrap z-50 pointer-events-none">
                 <span>Sign out</span>
               </div>
-            </div>
-
-            {/* Bottom Expand Toggle Button */}
-            <div className="w-full pt-1.5 border-t border-[#1a2337]/60 flex justify-center mt-1">
-              <button
-                type="button"
-                onClick={toggleSidebar}
-                title="Expand sidebar"
-                className="w-8 h-8 rounded-lg bg-[#162035]/60 hover:bg-[#1f2d48] text-amber-400 hover:text-amber-300 border border-[#22304d] flex items-center justify-center transition-colors cursor-pointer"
-              >
-                <i className="bi bi-layout-sidebar text-xs" />
-              </button>
             </div>
           </div>
         )}
